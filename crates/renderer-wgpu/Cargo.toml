@@ -1,0 +1,17 @@
+[package]
+name = "creative-renderer-wgpu"
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+rust-version = { workspace = true }
+
+[dependencies]
+creative-renderer = { path = "../renderer" }
+creative-domain = { path = "../domain" }
+creative-geometry = { path = "../geometry" }
+wgpu = { workspace = true }
+wgpu-types = { workspace = true }
+bytemuck = { workspace = true }
+raw-window-handle = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }

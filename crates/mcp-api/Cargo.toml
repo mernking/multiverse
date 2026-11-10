@@ -1,0 +1,15 @@
+[package]
+name = "creative-mcp-api"
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+rust-version = { workspace = true }
+
+[dependencies]
+creative-domain = { path = "../domain" }
+creative-application = { path = "../application" }
+creative-ai-tools = { path = "../ai-tools" }
+serde = { workspace = true }
+thiserror = { workspace = true }
+rmcp = { workspace = true, features = ["transport-io"] }
+tokio = { workspace = true }

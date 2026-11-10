@@ -1,0 +1,21 @@
+[package]
+name = "creative-desktop"
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+rust-version = { workspace = true }
+
+[dependencies]
+creative-application = { path = "../../crates/application" }
+creative-canvas = { path = "../../crates/canvas" }
+creative-renderer = { path = "../../crates/renderer" }
+creative-renderer-wgpu = { path = "../../crates/renderer-wgpu" }
+creative-input = { path = "../../crates/input" }
+creative-domain = { path = "../../crates/domain" }
+iced = { workspace = true }
+iced_wgpu = { workspace = true }
+iced_runtime = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+thiserror = { workspace = true }

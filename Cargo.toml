@@ -1,0 +1,114 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/domain",
+    "crates/application",
+    "crates/commands",
+    "crates/platform",
+    "crates/storage",
+    "crates/cli-api",
+    "crates/mcp-api",
+    "crates/plugin-api",
+    "crates/canvas",
+    "crates/renderer",
+    "crates/renderer-wgpu",
+    "crates/renderer-software",
+    "crates/input",
+    "crates/geometry",
+    "crates/brushes",
+    "crates/selection",
+    "crates/layers",
+    "crates/precision",
+    "crates/assets",
+    "crates/documents",
+    "crates/history",
+    "crates/importers",
+    "crates/exporters",
+    "crates/agent",
+    "crates/ai-providers",
+    "crates/ai-tools",
+    "crates/brainstorming",
+    "crates/context",
+    "apps/desktop",
+    "apps/cli",
+    "apps/mcp",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+rust-version = "1.82"
+
+[workspace.dependencies]
+# Core
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+anyhow = "1.0"
+tracing = { version = "0.1", features = ["std"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt", "json"] }
+uuid = { version = "1.0", features = ["serde", "v4", "v7"] }
+parking_lot = "0.12"
+
+# Async
+tokio = { version = "1.0", features = ["full"] }
+async-trait = "0.1"
+
+# Geometry & Math
+glam = "0.29"
+kurbo = "0.9"
+lyon = { version = "1.0", features = ["lyon_extra"] }
+rstar = "0.13"
+
+# Serialization
+bincode = "1.3"
+rmp-serde = "1.1"
+
+# Image handling
+image = { version = "0.25", features = ["png", "jpeg", "webp", "gif", "bmp", "tiff", "hdr", "dds"] }
+webp = "0.9"
+resvg = { version = "0.40", features = ["system-fonts", "text"] }
+tiny-skia = "0.8"
+
+# UI
+iced = { version = "0.13", features = ["wgpu", "tokio"] }
+iced_wgpu = "0.13"
+iced_runtime = { version = "0.13", features = ["multi-window"] }
+cosmic-text = "0.11"
+
+# GPU Rendering
+wgpu = { version = "0.20", features = ["wgsl", "serde"] }
+wgpu-types = "0.20"
+bytemuck = { version = "1.0", features = ["derive"] }
+raw-window-handle = "0.6"
+
+# CLI
+clap = { version = "4.5", features = ["derive", "env"] }
+indicatif = "0.17"
+console = "0.15"
+
+# MCP
+rmcp = { version = "0.2" }
+
+# AI
+async-openai = "0.18"
+
+# Testing
+proptest = "1.0"
+criterion = "0.5"
+insta = { version = "1.0", features = ["json", "csv"] }
+
+# Platform
+#[cfg(target_os = "android")]
+jni = "0.21"
+#[cfg(target_os = "ios")]
+objc2 = { version = "0.6", features = ["foundation", "appkit", "metal"] }
+uniffi = { version = "0.28", features = ["proc-macro"] }
+
+# Utilities
+directories = "5.0"
+tempfile = "3.0"
+walkdir = "2.0"
+zip = "0.6"
+flate2 = "1.0"

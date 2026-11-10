@@ -1,0 +1,21 @@
+[package]
+name = "creative-mcp"
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+rust-version = { workspace = true }
+
+[[bin]]
+name = "creative-mcp"
+path = "src/main.rs"
+
+[dependencies]
+creative-mcp-api = { path = "../../crates/mcp-api" }
+creative-application = { path = "../../crates/application" }
+creative-domain = { path = "../../crates/domain" }
+rmcp = { workspace = true, features = ["transport-io"] }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }

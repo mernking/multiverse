@@ -1,0 +1,14 @@
+[package]
+name = "creative-ai-tools"
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+rust-version = { workspace = true }
+
+[dependencies]
+creative-domain = { path = "../domain" }
+creative-commands = { path = "../commands" }
+creative-geometry = { path = "../geometry" }
+serde = { workspace = true }
+thiserror = { workspace = true }
+schemars = { version = "0.8", features = ["derive"] }

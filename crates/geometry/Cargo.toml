@@ -1,0 +1,15 @@
+[package]
+name = "creative-geometry"
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+rust-version = { workspace = true }
+
+[dependencies]
+creative-domain = { path = "../domain" }
+serde = { workspace = true }
+thiserror = { workspace = true }
+lyon = { workspace = true }
+kurbo = { workspace = true }
+glam = { workspace = true }
+rstar = { workspace = true }

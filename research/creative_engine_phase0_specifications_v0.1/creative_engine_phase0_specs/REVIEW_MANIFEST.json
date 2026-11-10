@@ -1,0 +1,97 @@
+{
+  "pack": "Creative Engine Phase 0 Specification Pack",
+  "version": "0.1",
+  "status": "Draft for owner review",
+  "documents": [
+    {
+      "file": "README.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "PRODUCT_REQUIREMENTS.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "FEATURE_INVENTORY.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "UI_UX_SPECIFICATION.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "RUST_WORKSPACE_ARCHITECTURE.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "CANVAS_ENGINE_SPECIFICATION.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "VECTOR_GEOMETRY_SPECIFICATION.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "RENDERING_ENGINE_SPECIFICATION.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "BRUSH_ENGINE_SPECIFICATION.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "DOCUMENT_FORMAT_SPECIFICATION.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "CROSS_PLATFORM_ARCHITECTURE.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "CLI_SPECIFICATION.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "MCP_SPECIFICATION.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "AI_AGENT_SPECIFICATION.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "BRAINSTORMING_ENGINE_SPECIFICATION.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "IMPORT_EXPORT_SPECIFICATION.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "TESTING_AND_ACCEPTANCE_CRITERIA.md",
+      "status": "Draft",
+      "review": "Pending"
+    },
+    {
+      "file": "DEVELOPMENT_ROADMAP.md",
+      "status": "Draft",
+      "review": "Pending"
+    }
+  ]
+}

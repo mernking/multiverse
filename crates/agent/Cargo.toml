@@ -1,0 +1,18 @@
+[package]
+name = "creative-agent"
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+rust-version = { workspace = true }
+
+[dependencies]
+creative-domain = { path = "../domain" }
+creative-ai-providers = { path = "../ai-providers" }
+creative-ai-tools = { path = "../ai-tools" }
+creative-context = { path = "../context" }
+creative-brainstorming = { path = "../brainstorming" }
+creative-history = { path = "../history" }
+serde = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true }
+async-trait = { workspace = true }

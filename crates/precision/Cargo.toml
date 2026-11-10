@@ -1,0 +1,12 @@
+[package]
+name = "creative-precision"
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+rust-version = { workspace = true }
+
+[dependencies]
+creative-domain = { path = "../domain" }
+creative-geometry = { path = "../geometry" }
+serde = { workspace = true }
+thiserror = { workspace = true }

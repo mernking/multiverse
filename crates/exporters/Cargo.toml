@@ -1,0 +1,17 @@
+[package]
+name = "creative-exporters"
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+rust-version = { workspace = true }
+
+[dependencies]
+creative-domain = { path = "../domain" }
+creative-geometry = { path = "../geometry" }
+creative-renderer = { path = "../renderer" }
+creative-renderer-software = { path = "../renderer-software" }
+serde = { workspace = true }
+thiserror = { workspace = true }
+image = { workspace = true }
+resvg = { workspace = true }
+tiny-skia = { workspace = true }

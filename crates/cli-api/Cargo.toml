@@ -1,0 +1,13 @@
+[package]
+name = "creative-cli-api"
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+rust-version = { workspace = true }
+
+[dependencies]
+creative-domain = { path = "../domain" }
+creative-application = { path = "../application" }
+serde = { workspace = true }
+thiserror = { workspace = true }
+clap = { workspace = true }
