@@ -3,8 +3,8 @@
 //! Provides a backend-agnostic rendering interface with support for
 //! GPU (wgpu) and software (tiny-skia) backends.
 
-use creative_domain::{Point2, Rect, Color, Camera, Vector2};
-use creative_geometry::{Geometry, GeometryId, BoundingBox, StrokeStyle, FillRule};
+use creative_domain::{Point2, Rect, Color, Camera};
+use creative_geometry::{Geometry, GeometryId, BoundingBox, StrokeStyle};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use std::collections::HashMap;
@@ -224,10 +224,14 @@ pub struct Renderer {
     backend: Box<dyn RenderBackendImpl>,
     config: RenderConfig,
     stats: RenderStats,
+    /// Cached render results, reserved for incremental rendering
+    #[allow(dead_code)]
     item_cache: HashMap<GeometryId, CachedGeometry>,
     frame_count: u64,
 }
 
+#[derive(Debug)]
+#[allow(dead_code)]
 struct CachedGeometry {
     geometry_id: GeometryId,
     revision: u64,
@@ -239,7 +243,7 @@ struct CachedGeometry {
 impl Renderer {
     /// Create a new renderer with the specified backend
     pub fn new(backend_type: RenderBackend) -> Result<Self, RenderError> {
-        let backend: Box<dyn RenderBackendImpl> = match backend_type {
+        let _backend: Box<dyn RenderBackendImpl> = match backend_type {
             RenderBackend::Wgpu => {
                 #[cfg(feature = "wgpu")]
                 {
@@ -267,6 +271,21 @@ impl Renderer {
             Self::new(RenderBackend::Wgpu)
         } else {
             Self::new(RenderBackend::Software)
+        }
+    }
+
+    /// Create a renderer around a pre-constructed backend implementation.
+    ///
+    /// This lets composition roots (e.g. the application crate) supply backend
+    /// implementations from optional crates such as `creative-renderer-software`
+    /// without creating a circular dependency between the two renderer crates.
+    pub fn with_backend(backend: Box<dyn RenderBackendImpl>) -> Self {
+        Self {
+            backend,
+            config: RenderConfig::default(),
+            stats: RenderStats::default(),
+            item_cache: HashMap::new(),
+            frame_count: 0,
         }
     }
     
@@ -372,6 +391,11 @@ impl Renderer {
             .iter()
             .filter(|item| item.bounding_box.intersects(creative_geometry::BoundingBox::new(cull_rect.min, cull_rect.max)))
             .collect()
+    }
+    
+    /// Get current render config
+    pub fn config(&self) -> &RenderConfig {
+        &self.config
     }
     
     /// Get current render stats
@@ -497,8 +521,8 @@ impl RenderItemBuilder {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use creative_domain::{DocumentId, ObjectId, Point2, Rect, Color};
-    use creative_geometry::{Geometry, ShapeGeometry, ShapeType, GeometryId};
+    use creative_domain::{ObjectId, Point2, Rect};
+    use creative_geometry::{Geometry, ShapeGeometry, ShapeType};
 
     #[test]
     fn test_render_config_default() {

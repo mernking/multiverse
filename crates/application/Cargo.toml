@@ -25,9 +25,14 @@ creative-agent = { path = "../agent" }
 creative-ai-tools = { path = "../ai-tools" }
 creative-context = { path = "../context" }
 creative-brainstorming = { path = "../brainstorming" }
+creative-renderer = { path = "../renderer" }
+creative-renderer-software = { path = "../renderer-software" }
+creative-input = { path = "../input" }
 serde = { workspace = true }
+serde_json = { workspace = true }
 thiserror = { workspace = true }
 anyhow = { workspace = true }
 tokio = { workspace = true }
 async-trait = { workspace = true }
 tracing = { workspace = true }
+uuid = { workspace = true }
