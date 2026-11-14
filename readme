@@ -1,0 +1,41 @@
+# Multiverse
+
+# Multiverse — One limitless space for every idea.
+
+**Multiverse** is an ambitious, open-source, cross-platform creative workspace designed to bring ideas, creativity, engineering, and intelligent tools together in one limitless environment.
+
+Inspired by the flexibility of infinite-canvas applications, Multiverse aims to provide a powerful workspace for sketching, technical drawing, visual thinking, diagramming, brainstorming, and professional design.
+
+Built around a high-performance Rust core, Multiverse combines a vector-first canvas, precision drawing tools, GPU-accelerated rendering, customizable brushes, document management, and a modern user interface.
+
+Beyond traditional drawing applications, Multiverse is designed with extensibility and intelligent workflows in mind. It will feature an integrated AI agent supporting multiple providers, including OpenAI and Anthropic, alongside a command-line interface (CLI) and Model Context Protocol (MCP) server for automation, external integrations, and programmatic control.
+
+### Core vision
+
+To create a versatile, extensible, and intelligent digital workspace where users can think, design, draw, visualize, organize, and develop ideas without the limitations of a traditional canvas.
+
+### Planned capabilities
+
+- Infinite, high-performance canvas.
+- Vector-based drawing and geometry tools.
+- Freeform sketching and customizable brushes.
+- Precision grids, guides, snapping, and measurements.
+- Layers, object manipulation, and transformations.
+- Advanced GPU-accelerated rendering.
+- Import and export for common creative and technical file formats.
+- AI-powered assistance and brainstorming.
+- OpenAI and Anthropic provider support.
+- CLI for automation and document operations.
+- MCP server for AI and external application integrations.
+- Extensible plugin architecture.
+- Cross-platform support for Linux, Windows, macOS, Android, and iOS.
+
+### Technology
+
+- **Core:** Rust
+- **Desktop UI:** Iced
+- **Rendering:** wgpu (planned)
+- **AI:** OpenAI and Anthropic integrations
+- **Automation and interoperability:** CLI and MCP
+
+Multiverse is being developed as an independent open-source project, with a long-term vision of becoming a comprehensive creative and technical workspace.
