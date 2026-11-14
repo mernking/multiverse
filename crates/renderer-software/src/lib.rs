@@ -3,8 +3,7 @@
 //! This crate provides the tiny-skia based software renderer.
 //! It's separated to allow optional compilation.
 
-use creative_renderer::{RenderBackendImpl, RenderConfig, RenderContext, RenderError, RenderItem, PreviewData, Viewport, RenderBackend, RenderFeature};
-use creative_domain::Color;
+use creative_renderer::{RenderBackendImpl, RenderConfig, RenderContext, RenderError, RenderItem, PreviewData, RenderBackend, RenderFeature};
 
 pub struct SoftwareBackend {
     initialized: bool,

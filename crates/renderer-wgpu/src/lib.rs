@@ -3,8 +3,7 @@
 //! This crate provides the wgpu-specific renderer implementation.
 //! It's separated to allow optional compilation of wgpu dependencies.
 
-use creative_renderer::{RenderBackendImpl, RenderConfig, RenderContext, RenderError, RenderItem, PreviewData, Viewport, RenderBackend, RenderFeature};
-use creative_domain::Color;
+use creative_renderer::{RenderBackendImpl, RenderConfig, RenderContext, RenderError, RenderItem, PreviewData, RenderBackend, RenderFeature};
 
 pub struct WgpuBackend {
     initialized: bool,

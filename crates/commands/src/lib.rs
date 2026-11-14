@@ -959,7 +959,7 @@ impl SelectionCommand {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use creative_domain::{DocumentId, ObjectId, LayerId, Color, Transform2D};
+    use creative_domain::DocumentId;
     
     #[test]
     fn test_document_command_validation() {

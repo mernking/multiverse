@@ -3,8 +3,8 @@
 //! Provides transactional undo/redo with grouping, branching support,
 //! and persistent transaction journal.
 
-use creative_domain::{DocumentId, ObjectId, LayerId, ArtboardId};
-use creative_commands::{Command, CommandResult, CommandError, BoxedCommand, UndoData, ObjectData, LayerData, LayerState};
+use creative_domain::{DocumentId, ObjectId};
+use creative_commands::{Command, CommandResult, BoxedCommand, UndoData};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use std::collections::VecDeque;
@@ -58,6 +58,7 @@ pub struct Transaction {
 }
 
 /// History manager for a document
+#[derive(Debug)]
 pub struct History {
     document_id: DocumentId,
     undo_stack: VecDeque<Transaction>,
@@ -68,6 +69,7 @@ pub struct History {
 }
 
 /// Transaction journal for persistence and crash recovery
+#[derive(Debug)]
 pub struct TransactionJournal {
     path: std::path::PathBuf,
     max_entries: usize,
@@ -310,7 +312,7 @@ impl History {
     }
     
     /// Begin a transaction group
-    pub fn begin_group(&mut self, description: &str) -> Uuid {
+    pub fn begin_group(&mut self, _description: &str) -> Uuid {
         let group_id = Uuid::new_v4();
         self.group_stack.push(group_id);
         group_id
@@ -400,25 +402,6 @@ impl History {
     }
 }
 
-/// Extension trait for BoxedCommand to get description
-trait BoxedCommandExt {
-    fn description(&self) -> String;
-}
-
-impl BoxedCommandExt for BoxedCommand {
-    fn description(&self) -> String {
-        match self {
-            BoxedCommand::Document(cmd) => format!("Document: {:?}", cmd),
-            BoxedCommand::Layer(cmd) => format!("Layer: {:?}", cmd),
-            BoxedCommand::Object(cmd) => format!("Object: {:?}", cmd),
-            BoxedCommand::Stroke(cmd) => format!("Stroke: {:?}", cmd),
-            BoxedCommand::Artboard(cmd) => format!("Artboard: {:?}", cmd),
-            BoxedCommand::Precision(cmd) => format!("Precision: {:?}", cmd),
-            BoxedCommand::Selection(cmd) => format!("Selection: {:?}", cmd),
-        }
-    }
-}
-
 /// Extension trait for Command to get description
 pub trait CommandExt {
     fn description(&self) -> String;
@@ -435,8 +418,8 @@ mod tests {
     use super::*;
     use creative_domain::{DocumentId, ObjectId, LayerId, Color, Transform2D, Point2, Rect, BlendMode};
     use creative_commands::{DocumentCommand, DocumentSettings, ObjectCommand, ObjectType, ObjectStyle, GeometryData};
-    use creative_geometry::{Geometry, ShapeGeometry, GeometryId, ShapeType};
-    use std::collections::HashMap;
+    use creative_geometry::{Geometry, ShapeGeometry, GeometryId};
+    
     use tempfile::TempDir;
     use uuid::Uuid;
     
@@ -451,11 +434,11 @@ mod tests {
     fn create_test_object_command() -> ObjectCommand {
         let obj_id = ObjectId::new();
         let layer_id = LayerId::new();
-        let geom_id = GeometryId::new();
+        let _geom_id = GeometryId::new();
         
         let rect = Rect::new(Point2::new(0.0, 0.0), Point2::new(100.0, 100.0));
         let shape = ShapeGeometry::new(creative_geometry::ShapeType::Rectangle, rect);
-        let geometry = Geometry::Shape(shape);
+        let _geometry = Geometry::Shape(shape);
         
         ObjectCommand::CreateObject {
             document_id: DocumentId::new(),

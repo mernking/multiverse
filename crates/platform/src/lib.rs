@@ -3,8 +3,7 @@
 //! This crate defines traits for platform-specific functionality that must be
 //! implemented for each target platform (Linux, Windows, macOS, Android, iOS).
 
-use creative_domain::{Point2, Color, Rect};
-use std::fmt;
+use creative_domain::Point2;
 use std::path::{Path, PathBuf};
 use thiserror::Error;
 
@@ -302,7 +301,7 @@ pub trait Platform: FileSystem + FileDialogs + Clipboard + SecureStorage + Input
 #[cfg(any(target_os = "linux", target_os = "windows", target_os = "macos"))]
 pub mod desktop {
     use super::*;
-    use std::sync::Arc;
+    
     use std::path::Path;
     
     pub struct DesktopFileSystem;

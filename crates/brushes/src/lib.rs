@@ -301,6 +301,7 @@ impl Default for StrokeConfig {
 }
 
 /// Brush engine for stroke generation
+#[derive(Debug)]
 pub struct BrushEngine {
     presets: HashMap<BrushId, BrushPreset>,
     config: StrokeConfig,
@@ -733,7 +734,7 @@ impl BrushEngine {
     }
     
     /// Smooth points using exponential moving average
-    fn smooth_points(&self, mut points: Vec<RawStrokePoint>, factor: f32) -> Vec<RawStrokePoint> {
+    fn smooth_points(&self, points: Vec<RawStrokePoint>, factor: f32) -> Vec<RawStrokePoint> {
         if points.len() < 3 || factor <= 0.0 {
             return points;
         }
@@ -745,7 +746,7 @@ impl BrushEngine {
         for i in 1..points.len() - 1 {
             let prev = &smoothed[i - 1];
             let curr = &points[i];
-            let next = &points[i + 1];
+            let _next = &points[i + 1];
             
             let smooth_pos = Point2::new(
                 prev.position.x * (1.0 - alpha as f64) + curr.position.x * alpha as f64,
@@ -1126,7 +1127,7 @@ impl StrokeTessellator {
         Self
     }
     
-    pub fn tessellate_stroke(&self, stroke: &Stroke, preset: &BrushPreset) -> Result<Vec<f32>, BrushError> {
+    pub fn tessellate_stroke(&self, stroke: &Stroke, _preset: &BrushPreset) -> Result<Vec<f32>, BrushError> {
         // Return flattened stroke points for rendering
         if stroke.points.is_empty() {
             return Ok(Vec::new());
@@ -1224,7 +1225,7 @@ impl BrushLibrary {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use creative_domain::{Color, Point2};
+    use creative_domain::Point2;
     use creative_input::{PointerEvent, PointerEventType, InputDeviceType, PointerButton, Modifiers};
     
     fn create_test_pointer_event(x: f64, y: f64, pressure: f32, timestamp: u64) -> PointerEvent {
@@ -1309,7 +1310,7 @@ mod tests {
     
     #[test]
     fn test_eraser_brush() {
-        let mut engine = BrushEngine::new(StrokeConfig::default());
+        let engine = BrushEngine::new(StrokeConfig::default());
         let erasers = engine.list_by_family(BrushFamily::Eraser);
         assert!(!erasers.is_empty());
         

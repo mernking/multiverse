@@ -3,12 +3,11 @@
 //! Provides the native file model, schema versioning, and migration framework
 //! for the `.ceng` document format.
 
-use creative_domain::{DocumentId, DocumentMeta, DocumentSettings, Layer, LayerId, ObjectId, Artboard, ArtboardId, Camera, Color, Point2, Rect, BlendMode, Transform2D, GridType, MeasurementUnit};
+use creative_domain::{DocumentId, DocumentMeta, DocumentSettings, Layer, LayerId, ObjectId, Artboard, ArtboardId, Camera, Color, BlendMode, Transform2D};
 use creative_geometry::Geometry;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use std::collections::HashMap;
-use uuid::Uuid;
 
 /// Document model errors
 #[derive(Debug, Error)]
@@ -143,7 +142,7 @@ impl MigrationRegistry {
 
 impl Default for MigrationRegistry {
     fn default() -> Self {
-        let mut registry = Self::new();
+        let registry = Self::new();
         
         // Register migrations here as versions increase
         // registry.register(Box::new(V1ToV2Migration));
@@ -384,7 +383,7 @@ impl Default for DocumentModel {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use creative_domain::{DocumentId, LayerId, ObjectId, ArtboardId, Color, Point2, Rect, Transform2D, BlendMode};
+    use creative_domain::{LayerId, ObjectId, Color, Point2, Rect, Transform2D, BlendMode};
     use creative_geometry::{Geometry, ShapeGeometry, ShapeType, GeometryId};
     
     fn create_test_object() -> (DocumentObject, Geometry) {

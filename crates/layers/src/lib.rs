@@ -108,7 +108,7 @@ impl LayerTree {
         let mut tree = Self::new();
         
         // Find or create root
-        let root_id = layers
+        let _root_id = layers
             .iter()
             .find(|l| l.parent.is_none())
             .map(|l| l.id)
@@ -140,7 +140,8 @@ impl LayerTree {
     }
 
     /// Get layer node with computed properties
-    pub fn get_node(&self, id: LayerId) -> Option<&LayerNode> {
+    #[allow(dead_code)]
+    pub(crate) fn get_node(&self, id: LayerId) -> Option<&LayerNode> {
         self.layers.get(&id)
     }
 
@@ -816,7 +817,7 @@ impl LayerTree {
     }
 
     /// Get layer bounds (union of all object bounds - placeholder)
-    pub fn layer_bounds(&self, id: LayerId) -> Option<Rect> {
+    pub fn layer_bounds(&self, _id: LayerId) -> Option<Rect> {
         // This would need access to object geometry
         // For now return None
         None
@@ -883,10 +884,10 @@ pub fn apply_layer_operation(tree: &mut LayerTree, op: &LayerOperation) -> Resul
                 parent_node.layer.children.push(layer.id);
             }
         }
-        LayerOperation::DeleteLayer { layer, parent, index } => {
+        LayerOperation::DeleteLayer { layer, parent: _, index: _ } => {
             tree.delete_layer(layer.id)?;
         }
-        LayerOperation::MoveLayer { id, old_parent, new_parent, old_index: _ } => {
+        LayerOperation::MoveLayer { id, old_parent: _, new_parent, old_index: _ } => {
             tree.move_layer(*id, *new_parent)?;
         }
         LayerOperation::ReorderLayer { id, old_index: _, new_index } => {
@@ -954,7 +955,7 @@ pub fn reverse_layer_operation(op: &LayerOperation) -> LayerOperation {
                 index: 0, // Would need actual index
             }
         }
-        LayerOperation::DeleteLayer { layer, parent, index } => {
+        LayerOperation::DeleteLayer { layer, parent, index: _ } => {
             LayerOperation::AddLayer {
                 parent: *parent,
                 layer: layer.clone(),
@@ -1055,7 +1056,7 @@ pub fn reverse_layer_operation(op: &LayerOperation) -> LayerOperation {
                 index: 0,
             }
         }
-        LayerOperation::MergeDown { upper, lower, moved_objects } => {
+        LayerOperation::MergeDown { upper, lower, moved_objects: _ } => {
             LayerOperation::MoveLayer {
                 id: *upper,
                 old_parent: *lower,
@@ -1063,7 +1064,7 @@ pub fn reverse_layer_operation(op: &LayerOperation) -> LayerOperation {
                 old_index: 0,
             }
         }
-        LayerOperation::FlattenVisible { new_layer, hidden_layers } => {
+        LayerOperation::FlattenVisible { new_layer, hidden_layers: _ } => {
             // Complex to reverse, simplified
             LayerOperation::DeleteLayer {
                 layer: new_layer.clone(),
@@ -1083,7 +1084,7 @@ impl Default for LayerTree {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use creative_domain::{Color, LayerId, ObjectId, Point2, Rect};
+    use creative_domain::{Color, LayerId, ObjectId};
 
     #[test]
     fn test_layer_tree_creation() {
@@ -1178,8 +1179,8 @@ mod tests {
         let root = tree.root_id();
         
         let layer1 = tree.add_layer(root, "Layer 1").unwrap();
-        let layer2 = tree.add_layer(root, "Layer 2").unwrap();
-        let layer3 = tree.add_layer(root, "Layer 3").unwrap();
+        let _layer2 = tree.add_layer(root, "Layer 2").unwrap();
+        let _layer3 = tree.add_layer(root, "Layer 3").unwrap();
         
         // Initial order: layer1, layer2, layer3 (bottom to top)
         // Move layer1 to top (index 2)
@@ -1276,7 +1277,7 @@ mod tests {
         let mut tree = LayerTree::new();
         let root = tree.root_id();
         
-        let layer1 = tree.add_layer(root, "Layer 1").unwrap();
+        let _layer1 = tree.add_layer(root, "Layer 1").unwrap();
         let layer2 = tree.add_layer(root, "Layer 2").unwrap();
         
         // Try to rename layer2 to "Layer 1" - should fail
@@ -1348,7 +1349,7 @@ mod tests {
         tree.set_opacity(layer, 0.7).unwrap();
         tree.set_blend_mode(layer, BlendMode::Multiply).unwrap();
         
-        let child = tree.add_layer(layer, "Child").unwrap();
+        let _child = tree.add_layer(layer, "Child").unwrap();
         
         let dup_id = tree.duplicate_layer(layer).unwrap();
         

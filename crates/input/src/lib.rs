@@ -139,6 +139,7 @@ pub struct PointerState {
 }
 
 /// Input processor for normalizing and managing input events
+#[derive(Debug)]
 pub struct InputProcessor {
     state: InputState,
     config: InputConfig,
@@ -245,6 +246,7 @@ impl Default for InputConfig {
 }
 
 /// Gesture recognizer
+#[derive(Debug)]
 pub struct GestureRecognizer {
     config: InputConfig,
     pan_state: Option<PanState>,
@@ -264,6 +266,7 @@ struct PanState {
 }
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 struct ZoomState {
     start_distance: f64,
     start_center: Point2,
@@ -271,6 +274,7 @@ struct ZoomState {
 }
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 struct RotateState {
     start_angle: f64,
     start_center: Point2,

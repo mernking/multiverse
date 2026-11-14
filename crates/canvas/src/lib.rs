@@ -4,8 +4,7 @@
 //! camera transforms, viewport management, and spatial indexing.
 
 use creative_domain::{DocumentId, ObjectId, Point2, Rect, Camera, Vector2};
-use creative_geometry::{Geometry, GeometryId, BoundingBox};
-use rstar::{RTree, RTreeObject, AABB, PointDistance};
+use rstar::RTree;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use thiserror::Error;
@@ -56,7 +55,7 @@ impl Default for CanvasConfig {
 }
 
 /// Canvas state
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct CanvasState {
     pub camera: Camera,
     pub config: CanvasConfig,
@@ -117,6 +116,7 @@ impl Default for ToolState {
 
 /// Object in spatial index
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 struct SpatialObject {
     id: ObjectId,
     bbox: creative_geometry::BoundingBox,
@@ -139,6 +139,7 @@ impl rstar::PointDistance for SpatialObject {
 }
 
 /// Infinite canvas with spatial indexing
+#[derive(Debug)]
 pub struct Canvas {
     state: CanvasState,
     spatial_index: RTree<SpatialObject>,
@@ -234,7 +235,7 @@ impl Canvas {
     }
     
     pub fn zoom_at(&mut self, factor: f64, screen_point: Point2, viewport: Viewport) {
-        let world_point = self.screen_to_world(screen_point, viewport);
+        let _world_point = self.screen_to_world(screen_point, viewport);
         let new_zoom = (self.state.camera.zoom * factor).clamp(self.state.config.min_zoom, self.state.config.max_zoom);
         if new_zoom == self.state.camera.zoom { return; }
         let zoom_ratio = new_zoom / self.state.camera.zoom;
@@ -248,7 +249,7 @@ impl Canvas {
         self.state.camera.zoom = new_zoom;
     }
     
-    pub fn rotate_at(&mut self, angle_delta: f64, screen_point: Point2, viewport: Viewport) {
+    pub fn rotate_at(&mut self, angle_delta: f64, _screen_point: Point2, _viewport: Viewport) {
         self.state.camera.rotation += angle_delta;
     }
     
@@ -324,26 +325,26 @@ impl Canvas {
     pub fn tool_mouse_move(&mut self, screen_point: Point2, viewport: Viewport) {
         let world_point = self.screen_to_world(screen_point, viewport);
         match &mut self.state.tool_state {
-            ToolState::Selecting { start, current } => { *current = world_point; }
-            ToolState::Panning { start, camera_center } => { if let Some(pan_start) = self.state.pan_start { let delta = Vector2::new(screen_point.x - pan_start.x, screen_point.y - pan_start.y); self.pan(delta, viewport); } }
-            ToolState::Zooming { center, start_zoom } => {}
-            ToolState::Rotating { center, start_angle } => {}
-            ToolState::Drawing { start, current, points } => { *current = world_point; points.push(world_point); }
-            ToolState::CreatingShape { start, current, .. } => { *current = world_point; }
-            ToolState::Measuring { start, current } => { *current = world_point; }
+            ToolState::Selecting { start: _, current } => { *current = world_point; }
+            ToolState::Panning { start: _, camera_center: _ } => { if let Some(pan_start) = self.state.pan_start { let delta = Vector2::new(screen_point.x - pan_start.x, screen_point.y - pan_start.y); self.pan(delta, viewport); } }
+            ToolState::Zooming { center: _, start_zoom: _ } => {}
+            ToolState::Rotating { center: _, start_angle: _ } => {}
+            ToolState::Drawing { start: _, current, points } => { *current = world_point; points.push(world_point); }
+            ToolState::CreatingShape { start: _, current, .. } => { *current = world_point; }
+            ToolState::Measuring { start: _, current } => { *current = world_point; }
             _ => {}
         }
         self.state.hovered_object = self.hit_test(screen_point, viewport);
     }
     
     pub fn tool_mouse_up(&mut self, screen_point: Point2, viewport: Viewport) -> Option<ToolAction> {
-        let world_point = self.screen_to_world(screen_point, viewport);
+        let _world_point = self.screen_to_world(screen_point, viewport);
         let action = match std::mem::take(&mut self.state.tool_state) {
             ToolState::Selecting { start, current } => { self.state.is_panning = false; self.state.pan_start = None; if start.distance_to(current) < 10.0 { ToolAction::SelectSingle } else { ToolAction::SelectRect(Rect::new(start, current)) } }
             ToolState::Panning { .. } => { self.state.is_panning = false; self.state.pan_start = None; ToolAction::Pan }
             ToolState::Zooming { .. } => ToolAction::Zoom,
             ToolState::Rotating { .. } => { self.state.is_rotating = false; self.state.rotation_start = None; ToolAction::Rotate }
-            ToolState::Drawing { start, current, points } => { if points.len() > 1 { ToolAction::DrawStroke { points } } else { ToolAction::None } }
+            ToolState::Drawing { start: _, current: _, points } => { if points.len() > 1 { ToolAction::DrawStroke { points } } else { ToolAction::None } }
             ToolState::CreatingShape { start, current, shape_type } => { ToolAction::CreateShape { shape_type, rect: Rect::new(start, current) } }
             ToolState::Measuring { start, current } => { ToolAction::CreateMeasurement { start, end: current } }
             _ => ToolAction::None,

@@ -3,7 +3,7 @@
 //! Provides atomic save/load, autosave journal, and crash recovery
 //! for native `.ceng` document format (ZIP container with manifest + JSON).
 
-use creative_domain::{DocumentId, DocumentMeta, DocumentSettings, Layer, LayerId, ObjectId, Artboard, ArtboardId, Camera};
+use creative_domain::{DocumentId, DocumentMeta, DocumentSettings, Layer, LayerId, ObjectId, Artboard, Camera};
 use creative_geometry::Geometry;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
@@ -11,7 +11,6 @@ use std::collections::HashMap;
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
-use uuid::Uuid;
 
 /// Storage errors
 #[derive(Debug, Error)]
@@ -112,6 +111,8 @@ pub struct Manifest {
 /// Document storage handler
 pub struct DocumentStorage {
     autosave_dir: PathBuf,
+    /// Interval used by the (not yet wired) autosave loop
+    #[allow(dead_code)]
     autosave_interval_ms: u64,
 }
 
@@ -385,7 +386,7 @@ impl AutosaveService {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use creative_domain::{DocumentId, DocumentMeta, DocumentSettings, Layer, LayerId, ObjectId, Artboard, ArtboardId, Camera, Color, Point2, Rect, BlendMode, Transform2D, GridType, MeasurementUnit};
+    use creative_domain::{DocumentId, DocumentMeta, DocumentSettings, Layer, LayerId, ObjectId, Artboard, ArtboardId, Camera, Color, Point2, Rect, BlendMode, Transform2D};
     use creative_geometry::{Geometry, ShapeGeometry, ShapeType, GeometryId};
     use tempfile::TempDir;
     use std::collections::HashMap;
@@ -395,7 +396,7 @@ mod tests {
         let layer_id = LayerId::new();
         let obj_id = ObjectId::new();
         let geom_id = GeometryId::new();
-        let artboard_id = ArtboardId::new();
+        let _artboard_id = ArtboardId::new();
         
         let mut objects = HashMap::new();
         let mut geometries = HashMap::new();

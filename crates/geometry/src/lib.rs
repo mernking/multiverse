@@ -161,13 +161,25 @@ impl Geometry {
         }
     }
 
-    pub fn transform(&mut self, transform: creative_domain::Transform2D) {
+    /// Get the transform of the geometry (read-only)
+    pub fn transform(&self) -> creative_domain::Transform2D {
         match self {
-            Geometry::Path(g) => g.transform(transform),
-            Geometry::Shape(g) => g.transform(transform),
-            Geometry::Text(g) => g.transform(transform),
-            Geometry::Image(g) => g.transform(transform),
-            Geometry::Group(g) => g.transform(transform),
+            Geometry::Path(g) => g.transform,
+            Geometry::Shape(g) => g.transform,
+            Geometry::Text(g) => g.transform,
+            Geometry::Image(g) => g.transform,
+            Geometry::Group(g) => g.transform,
+        }
+    }
+
+    /// Set the transform of the geometry
+    pub fn set_transform(&mut self, transform: creative_domain::Transform2D) {
+        match self {
+            Geometry::Path(g) => g.transform = transform,
+            Geometry::Shape(g) => g.transform = transform,
+            Geometry::Text(g) => g.transform = transform,
+            Geometry::Image(g) => g.transform = transform,
+            Geometry::Group(g) => g.transform = transform,
         }
     }
 }

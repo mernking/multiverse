@@ -3,8 +3,8 @@
 //! Provides comprehensive selection tools: click, rectangle, lasso,
 //! multi-select with modifiers, and selection manipulation.
 
-use creative_domain::{DocumentId, ObjectId, LayerId, Point2, Rect, Vector2, Transform2D};
-use creative_geometry::{Geometry, BoundingBox};
+use creative_domain::{DocumentId, ObjectId, LayerId, Point2, Rect, Transform2D};
+use creative_geometry::BoundingBox;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use std::collections::{HashMap, HashSet};
@@ -60,6 +60,7 @@ pub struct Selection {
 }
 
 /// Selection manager
+#[derive(Debug)]
 pub struct SelectionManager {
     selection: Selection,
     hit_test_cache: HashMap<ObjectId, BoundingBox>,
@@ -109,7 +110,7 @@ impl SelectionManager {
     pub fn hit_test_point(&self, point: Point2, objects: &HashMap<ObjectId, (BoundingBox, Transform2D)>) -> Option<ObjectId> {
         // Check objects in reverse z-order (topmost first)
         let mut candidates: Vec<_> = objects.iter()
-            .filter(|(id, (bbox, transform))| {
+            .filter(|(_id, (bbox, transform))| {
                 // Transform point to object space
                 let inv_transform = transform.inverse();
                 if let Some(inv) = inv_transform {
@@ -131,7 +132,7 @@ impl SelectionManager {
     /// Hit test rectangle against objects
     pub fn hit_test_rect(&self, rect: Rect, objects: &HashMap<ObjectId, (BoundingBox, Transform2D)>) -> Vec<ObjectId> {
         objects.iter()
-            .filter(|(id, (bbox, transform))| {
+            .filter(|(_id, (bbox, transform))| {
                 // Quick bbox check in world space
                 let world_bbox = self.transform_bbox(bbox, transform);
                 world_bbox.intersects(BoundingBox::new(rect.min, rect.max))
@@ -147,7 +148,7 @@ impl SelectionManager {
         }
         
         objects.iter()
-            .filter(|(id, (bbox, transform))| {
+            .filter(|(_id, (bbox, transform))| {
                 let world_bbox = self.transform_bbox(bbox, transform);
                 // Check if any corner of bbox is inside lasso
                 let corners = [
@@ -244,7 +245,7 @@ impl SelectionManager {
                 Vec::new()
             }
             SelectionMode::AllOnLayer => {
-                if let Some(layer) = self.selection.active_layer {
+                if let Some(_layer) = self.selection.active_layer {
                     objects.iter()
                         .filter(|(_, (_, _))| true) // Would need layer info
                         .map(|(id, _)| *id)
@@ -456,10 +457,10 @@ impl SelectionCommand {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use creative_domain::{DocumentId, ObjectId, LayerId, Point2, Rect, Transform2D, Vector2};
-    use creative_geometry::{BoundingBox, GeometryId};
+    use creative_domain::{DocumentId, ObjectId, Point2, Transform2D};
+    use creative_geometry::BoundingBox;
     use std::collections::HashMap;
-    use uuid::Uuid;
+    
     
     fn create_test_objects() -> (HashMap<ObjectId, (BoundingBox, Transform2D)>, ObjectId, ObjectId, ObjectId) {
         let mut objects = HashMap::new();
@@ -608,7 +609,7 @@ mod tests {
     fn test_select_objects_direct() {
         let doc_id = DocumentId::new();
         let mut manager = SelectionManager::new(doc_id);
-        let (objects, obj1, obj2, _obj3) = create_test_objects();
+        let (_objects, obj1, obj2, _obj3) = create_test_objects();
         
         let ids: Vec<_> = vec![obj1, obj2];
         manager.select_objects(ids.clone(), false);
