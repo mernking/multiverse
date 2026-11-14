@@ -665,7 +665,20 @@ impl Application {
         let document_id = doc_state.document.meta.id;
         match gesture {
             creative_input::GestureEvent::Pan { delta, velocity: _ } => {
-                doc_state.canvas.pan(delta, viewport);
+                // A single-pointer drag must not pan when a tool operation is
+                // in progress (e.g. a pen stroke would have every recorded
+                // point collapse onto the same world position, because the
+                // camera keeps the cursor over the same point; the Pan tool
+                // also pans through its own pointer path and would double up).
+                // Pan gestures therefore only apply while no drag is active.
+                let drag_in_progress = !matches!(
+                    doc_state.canvas.state().tool_state,
+                    creative_canvas::ToolState::Idle
+                );
+
+                if !drag_in_progress {
+                    doc_state.canvas.pan(delta, viewport);
+                }
             }
             creative_input::GestureEvent::Zoom { factor, center } => {
                 doc_state.canvas.zoom_at(factor, center, viewport);

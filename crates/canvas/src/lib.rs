@@ -326,7 +326,7 @@ impl Canvas {
         let world_point = self.screen_to_world(screen_point, viewport);
         match &mut self.state.tool_state {
             ToolState::Selecting { start: _, current } => { *current = world_point; }
-            ToolState::Panning { start: _, camera_center: _ } => { if let Some(pan_start) = self.state.pan_start { let delta = Vector2::new(screen_point.x - pan_start.x, screen_point.y - pan_start.y); self.pan(delta, viewport); } }
+            ToolState::Panning { start: _, camera_center: _ } => { if let Some(pan_start) = self.state.pan_start { let delta = Vector2::new(screen_point.x - pan_start.x, screen_point.y - pan_start.y); self.pan(delta, viewport); self.state.pan_start = Some(screen_point); } }
             ToolState::Zooming { center: _, start_zoom: _ } => {}
             ToolState::Rotating { center: _, start_angle: _ } => {}
             ToolState::Drawing { start: _, current, points } => { *current = world_point; points.push(world_point); }
