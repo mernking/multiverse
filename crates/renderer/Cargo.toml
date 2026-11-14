@@ -5,6 +5,11 @@ edition = { workspace = true }
 license = { workspace = true }
 rust-version = { workspace = true }
 
+[features]
+default = ["software"]
+wgpu = []
+software = []
+
 [dependencies]
 creative-domain = { path = "../domain" }
 creative-geometry = { path = "../geometry" }

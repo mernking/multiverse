@@ -8,6 +8,10 @@ rust-version = { workspace = true }
 [dependencies]
 creative-domain = { path = "../domain" }
 creative-commands = { path = "../commands" }
+creative-geometry = { path = "../geometry" }
 serde = { workspace = true }
+serde_json = { workspace = true }
 thiserror = { workspace = true }
 parking_lot = { workspace = true }
+uuid = { workspace = true }
+tempfile = { workspace = true }

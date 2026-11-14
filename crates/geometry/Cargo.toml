@@ -13,3 +13,4 @@ lyon = { workspace = true }
 kurbo = { workspace = true }
 glam = { workspace = true }
 rstar = { workspace = true }
+uuid = { workspace = true }

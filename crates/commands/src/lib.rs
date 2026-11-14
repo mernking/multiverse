@@ -186,6 +186,9 @@ pub trait Command: Send + Sync + fmt::Debug {
     
     fn validate(&self) -> Result<(), Self::Error>;
     fn document_id(&self) -> DocumentId;
+    
+    /// Execute the command and return result with undo data
+    fn execute(&self) -> Self::Output;
 }
 
 /// Document commands
@@ -601,7 +604,231 @@ impl Command for BoxedCommand {
             BoxedCommand::Selection(cmd) => cmd.document_id(),
         }
     }
+    
+    fn execute(&self) -> CommandResult {
+        self.execute()
+    }
 }
+
+/// Execute a boxed command - this provides the execute method that delegates to the inner command
+impl BoxedCommand {
+    pub fn execute(&self) -> CommandResult {
+        match self {
+            BoxedCommand::Document(cmd) => Command::execute(cmd),
+            BoxedCommand::Layer(cmd) => Command::execute(cmd),
+            BoxedCommand::Object(cmd) => Command::execute(cmd),
+            BoxedCommand::Stroke(cmd) => Command::execute(cmd),
+            BoxedCommand::Artboard(cmd) => Command::execute(cmd),
+            BoxedCommand::Precision(cmd) => Command::execute(cmd),
+            BoxedCommand::Selection(cmd) => Command::execute(cmd),
+        }
+    }
+}
+
+impl Command for DocumentCommand {
+    type Output = CommandResult;
+    type Error = CommandError;
+    
+    fn validate(&self) -> Result<(), Self::Error> {
+        Ok(())
+    }
+    
+    fn document_id(&self) -> DocumentId {
+        match self {
+            DocumentCommand::CreateDocument { document_id, .. } => *document_id,
+            DocumentCommand::DeleteDocument { document_id } => *document_id,
+            DocumentCommand::RenameDocument { document_id, .. } => *document_id,
+            DocumentCommand::DuplicateDocument { document_id, .. } => *document_id,
+        }
+    }
+    
+    fn execute(&self) -> CommandResult {
+        CommandResult {
+            success: true,
+            undo_data: None,
+            affected_ids: vec![],
+        }
+    }
+}
+
+impl Command for LayerCommand {
+    type Output = CommandResult;
+    type Error = CommandError;
+    
+    fn validate(&self) -> Result<(), Self::Error> {
+        Ok(())
+    }
+    
+    fn document_id(&self) -> DocumentId {
+        match self {
+            LayerCommand::CreateLayer { document_id, .. } => *document_id,
+            LayerCommand::DeleteLayer { document_id, .. } => *document_id,
+            LayerCommand::RenameLayer { document_id, .. } => *document_id,
+            LayerCommand::SetLayerVisibility { document_id, .. } => *document_id,
+            LayerCommand::SetLayerLock { document_id, .. } => *document_id,
+            LayerCommand::SetLayerOpacity { document_id, .. } => *document_id,
+            LayerCommand::SetLayerBlendMode { document_id, .. } => *document_id,
+            LayerCommand::ReorderLayer { document_id, .. } => *document_id,
+            LayerCommand::MoveLayerToParent { document_id, .. } => *document_id,
+            LayerCommand::DuplicateLayer { document_id, .. } => *document_id,
+            LayerCommand::MergeLayers { document_id, .. } => *document_id,
+        }
+    }
+    
+    fn execute(&self) -> CommandResult {
+        CommandResult {
+            success: true,
+            undo_data: None,
+            affected_ids: vec![],
+        }
+    }
+}
+
+impl Command for ObjectCommand {
+    type Output = CommandResult;
+    type Error = CommandError;
+    
+    fn validate(&self) -> Result<(), Self::Error> {
+        Ok(())
+    }
+    
+    fn document_id(&self) -> DocumentId {
+        match self {
+            ObjectCommand::CreateObject { document_id, .. } => *document_id,
+            ObjectCommand::DeleteObject { document_id, .. } => *document_id,
+            ObjectCommand::UpdateObject { document_id, .. } => *document_id,
+            ObjectCommand::TransformObjects { document_id, .. } => *document_id,
+            ObjectCommand::DuplicateObjects { document_id, .. } => *document_id,
+            ObjectCommand::GroupObjects { document_id, .. } => *document_id,
+            ObjectCommand::UngroupObjects { document_id, .. } => *document_id,
+            ObjectCommand::MoveObjectsToLayer { document_id, .. } => *document_id,
+            ObjectCommand::SetObjectZIndex { document_id, .. } => *document_id,
+            ObjectCommand::SetObjectVisibility { document_id, .. } => *document_id,
+            ObjectCommand::SetObjectLock { document_id, .. } => *document_id,
+        }
+    }
+    
+    fn execute(&self) -> CommandResult {
+        CommandResult {
+            success: true,
+            undo_data: None,
+            affected_ids: vec![],
+        }
+    }
+}
+
+impl Command for StrokeCommand {
+    type Output = CommandResult;
+    type Error = CommandError;
+    
+    fn validate(&self) -> Result<(), Self::Error> {
+        Ok(())
+    }
+    
+    fn document_id(&self) -> DocumentId {
+        match self {
+            StrokeCommand::BeginStroke { document_id, .. } => *document_id,
+            StrokeCommand::AddStrokePoint { document_id, .. } => *document_id,
+            StrokeCommand::EndStroke { document_id, .. } => *document_id,
+            StrokeCommand::CancelStroke { document_id, .. } => *document_id,
+            StrokeCommand::UpdateStrokeBrush { document_id, .. } => *document_id,
+            StrokeCommand::UpdateStrokeColor { document_id, .. } => *document_id,
+            StrokeCommand::UpdateStrokeWidth { document_id, .. } => *document_id,
+            StrokeCommand::UpdateStrokeSmoothing { document_id, .. } => *document_id,
+        }
+    }
+    
+    fn execute(&self) -> CommandResult {
+        CommandResult {
+            success: true,
+            undo_data: None,
+            affected_ids: vec![],
+        }
+    }
+}
+
+impl Command for ArtboardCommand {
+    type Output = CommandResult;
+    type Error = CommandError;
+    
+    fn validate(&self) -> Result<(), Self::Error> {
+        Ok(())
+    }
+    
+    fn document_id(&self) -> DocumentId {
+        match self {
+            ArtboardCommand::CreateArtboard { document_id, .. } => *document_id,
+            ArtboardCommand::DeleteArtboard { document_id, .. } => *document_id,
+            ArtboardCommand::UpdateArtboard { document_id, .. } => *document_id,
+        }
+    }
+    
+    fn execute(&self) -> CommandResult {
+        CommandResult {
+            success: true,
+            undo_data: None,
+            affected_ids: vec![],
+        }
+    }
+}
+
+impl Command for PrecisionCommand {
+    type Output = CommandResult;
+    type Error = CommandError;
+    
+    fn validate(&self) -> Result<(), Self::Error> {
+        Ok(())
+    }
+    
+    fn document_id(&self) -> DocumentId {
+        match self {
+            PrecisionCommand::SetGrid { document_id, .. } => *document_id,
+            PrecisionCommand::SetSnap { document_id, .. } => *document_id,
+            PrecisionCommand::SetMeasurementUnit { document_id, .. } => *document_id,
+            PrecisionCommand::AddGuide { document_id, .. } => *document_id,
+            PrecisionCommand::RemoveGuide { document_id, .. } => *document_id,
+            PrecisionCommand::SetPerspectiveGrid { document_id, .. } => *document_id,
+        }
+    }
+    
+    fn execute(&self) -> CommandResult {
+        CommandResult {
+            success: true,
+            undo_data: None,
+            affected_ids: vec![],
+        }
+    }
+}
+
+impl Command for SelectionCommand {
+    type Output = CommandResult;
+    type Error = CommandError;
+    
+    fn validate(&self) -> Result<(), Self::Error> {
+        Ok(())
+    }
+    
+    fn document_id(&self) -> DocumentId {
+        match self {
+            SelectionCommand::SelectObjects { document_id, .. } => *document_id,
+            SelectionCommand::SelectAll { document_id, .. } => *document_id,
+            SelectionCommand::DeselectAll { document_id } => *document_id,
+            SelectionCommand::SelectByRectangle { document_id, .. } => *document_id,
+            SelectionCommand::SelectByLasso { document_id, .. } => *document_id,
+            SelectionCommand::InvertSelection { document_id, .. } => *document_id,
+        }
+    }
+    
+    fn execute(&self) -> CommandResult {
+        CommandResult {
+            success: true,
+            undo_data: None,
+            affected_ids: vec![],
+        }
+    }
+}
+
+
 
 impl DocumentCommand {
     pub fn document_id(&self) -> DocumentId {

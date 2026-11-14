@@ -13,3 +13,4 @@ creative-renderer = { path = "../renderer" }
 serde = { workspace = true }
 thiserror = { workspace = true }
 rstar = { workspace = true }
+uuid = { workspace = true }

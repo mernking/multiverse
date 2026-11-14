@@ -11,3 +11,4 @@ creative-geometry = { path = "../geometry" }
 serde = { workspace = true }
 thiserror = { workspace = true }
 rstar = { workspace = true }
+uuid = { workspace = true }

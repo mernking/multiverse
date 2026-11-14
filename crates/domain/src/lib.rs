@@ -327,7 +327,7 @@ pub struct Transform2D {
 }
 
 impl Transform2D {
-    pub const IDENTITY: Transform2D = Transform2D { m: [1.0, 0.0, 0.0, 1.0, 0.0, 0.0] };
+    pub const IDENTITY: Transform2D = Transform2D { m: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0] };
 
     pub fn new(a: f64, b: f64, c: f64, d: f64, e: f64, f: f64) -> Self {
         Self { m: [a, b, c, d, e, f] }
